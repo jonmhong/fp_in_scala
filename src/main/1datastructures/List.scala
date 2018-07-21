@@ -131,4 +131,33 @@ object List {
         foldRight(l, List[A]())((h, t) => Cons(t, h))
     }
 
+    /**
+    ex 13: write foldLeft in terms of foldRight; write vice versa
+    (This is a common trick to avoid stack overflow)
+    */
+    def foldLeftViaFoldRight[A,B](l: List[A], z: B): B = {
+        foldRight(reverse(l), z)((a,b) => f(a,b))
+    }
+
+    def foldRightViaFoldLeft[A,B](l: List[A], z: B): B = {
+        foldLeft(reverse(l), z)((b,a) => f(a,b))
+    }
+
+    /** ex 14: implement append in terms of foldLeft and foldRight */
+    def appendLeft[A](l: List[A], v: List[A]): List[A] = {
+        foldLeft(l, v)(Cons(_, _))
+    }
+
+    def appendRight[A](l: List[A], v: List[A]): List[A] = {
+        foldRight(l, v)(Cons(_, _))
+    }
+
+    /**
+    ex 15: write a fn that concats a list of lists into a single list.
+    runtime should be linear with respect to the total len of all lists.
+    use foldLeft and foldRight.
+    */
+    def concat[A](l: List[List[A]]): List[A] = {
+        foldRight(l, Nil:List[A])(append)
+    }
 }
