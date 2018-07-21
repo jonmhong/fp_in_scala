@@ -82,22 +82,53 @@ object List {
         go(l)
     }
 
-    def extendList[A](a1: List[A], a2: List[A]): List[A] = match a1 {
-        case Nil => a2
-        case Cons(h,t) => Cons(h, append(t, a2))
-    }
-
-    def foldRight[A,B](l: List[A], z: B)(f: (A, B) => B): B = l match {
-        // this doesn't make sense. need to go over this slowly
-        case Nil => z
-        case Cons(h,t) => f(x, foldRight(h, z)(f))
+    /** 
+    ex 7: when encountering duplication like with sum() and product(), we can
+    generalize by pulling subexpressions out into functional arguments: currying.
+    foldRight also replaces the constructors of the list
+    */
+    def foldRight[A,B](l: List[A], z: B)(f: (A,B) => B): B = l match {
+        case Nil => z  // base case
+        case Cons(h,t) => f(h, foldRight(t, z)(f)) // recursive fn
     }
 
     def sum2(l: List[Int]) =
-        foldRight(1, 0.0)(_ + _)
+        foldRight(l, 0.0)(_ + _)
 
     def product2(l: List[Double]) = 
-        foldRight(1, 1.0)(_ * _)
+        foldRight(l, 1.0)(_ * _)
 
-    
+    /** ex 7: compute the length of a list using foldRight */
+    def length[A](l: List[A]): Int =
+        foldRight(l, 0)((acc,_) => acc + 1)
+
+    /** ex 10: write a tail-recursive fn and call it foldLeft */
+    @annotation.tailrec
+    def foldLeft[A,B](l: List[A], z: B)(f: (B,A) => B) B = l match {
+        case Nil => z
+        case Cons(h, t) => f(t, foldLeft(h, z)(f))
+    }
+
+    /** ex 11: write sum, product, and length fns using foldLeft */
+    def sum3[A](l: List[A]): A = {
+        foldLeft(l, 0.0)(_ + _)
+    }
+
+    def product3[A](l: List[A]): A = {
+        foldLeft(l, 1.0)(_ * _)
+    }
+
+    def length2[A](l: List[A]): Int = {
+        foldLeft(l, 0.0)((acc,_) => acc + 1)
+    }
+
+    /** ex 12: write a fn that returns the reverse of the list, using a fold */
+    def reverseFoldLeft[A](l: List[A]): List[A] = {
+        foldLeft(l, List[A]())((t,h) => Cons(h, t))
+    }
+
+    def reverseFoldRight[A](l: List[A]): List[A] = {
+        foldRight(l, List[A]())((h, t) => Cons(t, h))
+    }
+
 }
