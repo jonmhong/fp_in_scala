@@ -171,11 +171,30 @@ object List {
         foldRight(l, Nil:List[String])((h,t) => Cons(h.toString, t))
     }
 
-    /** 
+    /**
     ex 18: write a fn map that generalized modifying each element while maintaining 
     the structure of the list
     */
-    def map[A,B](l: List[A])(f: A => B): List[B]
+    def map[A,B](l: List[A])(f: A => B): List[B] = {
+        foldRight(l, Nil:List[B])((h,t) => Cons(f(h), t))
+    }
+
+    // use foldRightViaFoldLeft to avoid building a high stack
+    def map2[A,B](l: List[A])(f: A => B): List[B] = {
+        foldRightViaFoldLeft(l, Nil:List[B])(((h, t) => Cons(f(h), t)))
+    }
+
+    /**
+    ex 19: write a function filter that removes elements from a list unless they
+    satisfy a given predicate. Use it to remove all odd numbers from a List[Int]
+    */
+    def filter[A](l: List[A])(f: A => Boolean): List[A] = {
+        foldRight(l, Nil:List[A])((h,t) => if f(h) Cons(h, t) else t)
+    }
+
+    /** ex 20: write a function flatMap that works like map except that the function will
+    return a list instead of a single result
+    */
 
     /**
     For standard library functions:
