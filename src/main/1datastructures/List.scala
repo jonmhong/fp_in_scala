@@ -39,7 +39,7 @@ object List {
         if (n <= 0) l
         else l match {
             case Nil => l
-            case Cons(_,t) => drop(t, n - 1)
+            case Cons(_,t) => drop(t, n-1)
         }
     }
 
@@ -132,7 +132,7 @@ object List {
     }
 
     /**
-    ex 13: write foldLeft in terms of foldRight; write vice versa
+    ex 13(hard): write foldLeft in terms of foldRight; write vice versa
     (This is a common trick to avoid stack overflow)
     */
     def foldLeftViaFoldRight[A,B](l: List[A], z: B): B = {
@@ -143,7 +143,7 @@ object List {
         foldLeft(reverse(l), z)((b,a) => f(a,b))
     }
 
-    /** ex 14: implement append in terms of foldLeft and foldRight */
+    /** ex 14(hard): implement append in terms of foldLeft and foldRight */
     def appendLeft[A](l: List[A], v: List[A]): List[A] = {
         foldLeft(l, v)(Cons(_, _))
     }
@@ -153,11 +153,32 @@ object List {
     }
 
     /**
-    ex 15: write a fn that concats a list of lists into a single list.
+    ex 15(hard): write a fn that concats a list of lists into a single list.
     runtime should be linear with respect to the total len of all lists.
     use foldLeft and foldRight.
     */
     def concat[A](l: List[List[A]]): List[A] = {
-        foldRight(l, Nil:List[A])(append)
+        foldRight(l, Nil:List[A])(appendRight)
     }
+
+    /** ex 16: write a fn that transforms a list of ints by adding to to each element */
+    def addOne(l: List[Int]): List[Int] = {
+        foldRight(l, Nil:List[Int])((h,t) => Cons(h+1, t))
+    }
+
+    /** ex 17: write a fn that turns each value in a List[Double] into a String */
+    def stringify(l: List[Double]): List[String] = {
+        foldRight(l, Nil:List[String])((h,t) => Cons(h.toString, t))
+    }
+
+    /** 
+    ex 18: write a fn map that generalized modifying each element while maintaining 
+    the structure of the list
+    */
+    def map[A,B](l: List[A])(f: A => B): List[B]
+
+    /**
+    For standard library functions:
+    https://www.scala-lang.org/api/current/scala/collection/immutable/List.html
+    */
 }
