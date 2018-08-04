@@ -195,6 +195,34 @@ object List {
     /** ex 20: write a function flatMap that works like map except that the function will
     return a list instead of a single result
     */
+    def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = {
+        concat(map(l)(f))
+    }
+
+    // use foldRight
+    def flatMap2[A,B](l: List[A])(f: A => List[B]): List[B] = {
+    }
+
+    /** ex 21: can you use flatMap to implement filter */
+    def flatMap[A,B](l: List[A]])(f: A => List[B]): List[B] = {}
+        filter()
+
+    /** 
+    ex 22: write a function that accepts two lists and constructs a new list by adding 
+    corresponding elements. ([a + b for a, b in zip(ListA, ListB)])
+     */
+     def addZip(): = {}
+
+    /** 
+    ex 23: generalize the function you just wrote so that it's not specific to
+    integers or addition
+    */
+    def zip[]()(): = {}
+
+    /**
+    ex 24: implement hasSubsequence for checking whether a List contains another List
+    */
+    def hasSubsequence[A](l: List[A], sub: List[A]): Boolean = {}
 
     /**
     For standard library functions:
