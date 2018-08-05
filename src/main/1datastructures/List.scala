@@ -136,11 +136,11 @@ object List {
     (This is a common trick to avoid stack overflow)
     */
     def foldLeftViaFoldRight[A,B](l: List[A], z: B): B = {
-        foldRight(reverse(l), z)((a,b) => f(a,b))
+        foldRight(reverseFoldLeft(l), z)((a,b) => f(a,b))
     }
 
     def foldRightViaFoldLeft[A,B](l: List[A], z: B): B = {
-        foldLeft(reverse(l), z)((b,a) => f(a,b))
+        foldLeft(reverseFoldLeft(l), z)((b,a) => f(a,b))
     }
 
     /** ex 14(hard): implement append in terms of foldLeft and foldRight */
@@ -161,7 +161,7 @@ object List {
         foldRight(l, Nil:List[A])(appendRight)
     }
 
-    /** ex 16: write a fn that transforms a list of ints by adding to to each element */
+    /** ex 16: write a fn that transforms a list of ints by adding to each element */
     def addOne(l: List[Int]): List[Int] = {
         foldRight(l, Nil:List[Int])((h,t) => Cons(h+1, t))
     }
@@ -193,19 +193,17 @@ object List {
     }
 
     /** ex 20: write a function flatMap that works like map except that the function will
-    return a list instead of a single result
+    return a list instead of a single result.
+    Use foldRight
     */
-    def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = {
-        concat(map(l)(f))
-    }
-
-    // use foldRight
     def flatMap2[A,B](l: List[A])(f: A => List[B]): List[B] = {
+        concat(foldRight(l, Nil:List[B])((h,t) => Cons(f(h), t)))
     }
 
     /** ex 21: can you use flatMap to implement filter */
-    def flatMap[A,B](l: List[A]])(f: A => List[B]): List[B] = {}
+    def flatMap[A,B](l: List[A]])(f: A => List[B]): List[B] = {
         filter()
+    }
 
     /** 
     ex 22: write a function that accepts two lists and constructs a new list by adding 
