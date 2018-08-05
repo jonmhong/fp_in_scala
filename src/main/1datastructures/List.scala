@@ -1,4 +1,4 @@
-package 0datastructures
+package 1datastructures
 
 // trait: abstract interface that contains implementations of some methods
 // sealed: all implementations can only be declared within this file
