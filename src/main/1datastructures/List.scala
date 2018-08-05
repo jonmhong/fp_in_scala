@@ -209,26 +209,38 @@ object List {
     ex 22: write a function that accepts two lists and constructs a new list by adding 
     corresponding elements. ([a + b for a, b in zip(ListA, ListB)])
      */
-    def addZip(a: List[Int], b: List[Int]): List[Int] = (a,b) match {
+    def additionZip(a: List[Int], b: List[Int]): List[Int] = (a,b) match {
         case (Nil,_) => Nil
         case (_,Nil) => Nil
-        case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1+h2, addZip(t1, t2))
+        case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1+h2, additionZip(t1, t2))
     }
 
     /** 
     ex 23: generalize the function you just wrote so that it's not specific to
     integers or addition
     */
-    def zip[A,B,C](a: List[A], b: List[B])(f: (A,B) => C): List[C] = {
+    def zip[A,B,C](a: List[A], b: List[B])(f: (A,B) => C): List[C] = (a,b) match {
         case (Nil,_) => Nil
         case (_,Nil) => Nil
         case (Cons(h1, t1), Cons(h2, t2))) => Cons(f(h1, h2) , zip(t1, t2)(f))
     }
-
+    
     /**
     ex 24: implement hasSubsequence for checking whether a List contains another List
     */
-    def hasSubsequence[A](l: List[A], sub: List[A]): Boolean = {}
+    @annotation.tailrec
+    def startsWith[A](l: List[A], sub: List[B]): Boolean = (l,sub) match {
+        case (_, Nil) => true
+        case (Cons(h1,t1), Cons(h2,t2) => (if h1 == h2 => startsWith(t1, t2)))
+        case _ => false
+    }
+
+    @annotation.tailrec
+    def hasSubsequence[A](l: List[A], sub: List[B]): Boolean = l match {
+        case Nil => sub == Nil
+        case _ if startsWith(l, sub) => true
+        case Cons(_,t) => hasSubsequence(t, sub)
+    }
 
     /**
     For standard library functions:
