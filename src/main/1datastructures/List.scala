@@ -136,11 +136,11 @@ object List {
     (This is a common trick to avoid stack overflow)
     */
     def foldLeftViaFoldRight[A,B](l: List[A], z: B): B = {
-        foldRight(reverse(l), z)((a,b) => f(a,b))
+        foldRight(reverseFoldLeft(l), z)((a,b) => f(a,b))
     }
 
     def foldRightViaFoldLeft[A,B](l: List[A], z: B): B = {
-        foldLeft(reverse(l), z)((b,a) => f(a,b))
+        foldLeft(reverseFoldLeft(l), z)((b,a) => f(a,b))
     }
 
     /** ex 14(hard): implement append in terms of foldLeft and foldRight */
@@ -161,7 +161,7 @@ object List {
         foldRight(l, Nil:List[A])(appendRight)
     }
 
-    /** ex 16: write a fn that transforms a list of ints by adding to to each element */
+    /** ex 16: write a fn that transforms a list of ints by adding to each element */
     def addOne(l: List[Int]): List[Int] = {
         foldRight(l, Nil:List[Int])((h,t) => Cons(h+1, t))
     }
@@ -171,11 +171,64 @@ object List {
         foldRight(l, Nil:List[String])((h,t) => Cons(h.toString, t))
     }
 
-    /** 
+    /**
     ex 18: write a fn map that generalized modifying each element while maintaining 
     the structure of the list
     */
-    def map[A,B](l: List[A])(f: A => B): List[B]
+    def map[A,B](l: List[A])(f: A => B): List[B] = {
+        foldRight(l, Nil:List[B])((h,t) => Cons(f(h), t))
+    }
+
+    // use foldRightViaFoldLeft to avoid building a high stack
+    def map2[A,B](l: List[A])(f: A => B): List[B] = {
+        foldRightViaFoldLeft(l, Nil:List[B])(((h, t) => Cons(f(h), t)))
+    }
+
+    /**
+    ex 19: write a function filter that removes elements from a list unless they
+    satisfy a given predicate. Use it to remove all odd numbers from a List[Int]
+    */
+    def filter[A](l: List[A])(f: A => Boolean): List[A] = {
+        foldRight(l, Nil:List[A])((h,t) => if f(h) Cons(h, t) else t)
+    }
+
+    /** ex 20: write a function flatMap that works like map except that the function will
+    return a list instead of a single result.
+    Use foldRight
+    */
+    def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = {
+        concat(foldRight(l, Nil:List[B])((h,t) => Cons(f(h), t)))
+    }
+
+    /** ex 21: can you use flatMap to implement filter */
+    def filterViaFlatMap[A](l: List[A])(f: A => Boolean): List[A] = {
+        flatMap(l)(a => if f(a) List(a) else Nil)
+    }
+
+    /** 
+    ex 22: write a function that accepts two lists and constructs a new list by adding 
+    corresponding elements. ([a + b for a, b in zip(ListA, ListB)])
+     */
+    def addZip(a: List[Int], b: List[Int]): List[Int] = (a,b) match {
+        case (Nil,_) => Nil
+        case (_,Nil) => Nil
+        case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1+h2, addZip(t1, t2))
+    }
+
+    /** 
+    ex 23: generalize the function you just wrote so that it's not specific to
+    integers or addition
+    */
+    def zip[A,B,C](a: List[A], b: List[B])(f: (A,B) => C): List[C] = {
+        case (Nil,_) => Nil
+        case (_,Nil) => Nil
+        case (Cons(h1, t1), Cons(h2, t2))) => Cons(f(h1, h2) , zip(t1, t2)(f))
+    }
+
+    /**
+    ex 24: implement hasSubsequence for checking whether a List contains another List
+    */
+    def hasSubsequence[A](l: List[A], sub: List[A]): Boolean = {}
 
     /**
     For standard library functions:
