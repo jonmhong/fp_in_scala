@@ -209,13 +209,21 @@ object List {
     ex 22: write a function that accepts two lists and constructs a new list by adding 
     corresponding elements. ([a + b for a, b in zip(ListA, ListB)])
      */
-     def addZip(): = {}
+    def addZip(a: List[Int], b: List[Int]): List[Int] = (a,b) match {
+        case (Nil,_) => Nil
+        case (_,Nil) => Nil
+        case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1+h2, addZip(t1, t2))
+    }
 
     /** 
     ex 23: generalize the function you just wrote so that it's not specific to
     integers or addition
     */
-    def zip[]()(): = {}
+    def zip[A,B,C](a: List[A], b: List[B])(f: (A,B) => C): List[C] = {
+        case (Nil,_) => Nil
+        case (_,Nil) => Nil
+        case (Cons(h1, t1), Cons(h2, t2))) => Cons(f(h1, h2) , zip(t1, t2)(f))
+    }
 
     /**
     ex 24: implement hasSubsequence for checking whether a List contains another List
