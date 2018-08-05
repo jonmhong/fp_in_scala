@@ -196,13 +196,13 @@ object List {
     return a list instead of a single result.
     Use foldRight
     */
-    def flatMap2[A,B](l: List[A])(f: A => List[B]): List[B] = {
+    def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = {
         concat(foldRight(l, Nil:List[B])((h,t) => Cons(f(h), t)))
     }
 
     /** ex 21: can you use flatMap to implement filter */
-    def flatMap[A,B](l: List[A]])(f: A => List[B]): List[B] = {
-        filter()
+    def filterViaFlatMap[A](l: List[A])(f: A => Boolean): List[A] = {
+        flatMap(l)(a => if f(a) List(a) else Nil)
     }
 
     /** 
