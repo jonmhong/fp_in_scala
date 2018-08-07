@@ -1,5 +1,7 @@
 package 1datastructures
 
+import scala.math.max
+
 sealed trait Tree[+A]
 
 case class Leaf[A](value: A) extends Tree[A]
@@ -28,7 +30,11 @@ object Tree {
         case Branch(l,r) => size(l) + size(r) + 1
     }
 
-    def maximum()
+    /** ex 26: write a fn maximum that returns the maximum element in a tree */
+    def maximum[A](node: Tree[A], m: A): A = node match {
+        case Leaf(v) => v
+        case Branch(l,r) => max(maximum(l), maximum(r))
+    }
 
     def depth()
 
