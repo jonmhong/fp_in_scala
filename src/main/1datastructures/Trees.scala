@@ -12,7 +12,7 @@ object Tree {
     /** ex 25: write a fn size that counts the number of nodes in a tree */
     def size[A](node: Tree[A]): Int = node match {
         //           branch
-        //           /    \
+        //          /      \
         //      branch    branch
         //      /   \     /   \
         //    leaf leaf leaf  branch
@@ -31,15 +31,35 @@ object Tree {
     }
 
     /** ex 26: write a fn maximum that returns the maximum element in a tree */
-    def maximum[A](node: Tree[A], m: A): A = node match {
+    def maximum[A](node: Tree[A]): A = node match {
         case Leaf(v) => v
         case Branch(l,r) => max(maximum(l), maximum(r))
+        // can also be written like this:
+        // case Branch(l,r) => maximum(l) max maximum(r)
     }
 
-    def depth()
+    /** ex 27: write a fn depth that returns the max path length from the root to leaf*/
+    def depth[A](node: Tree[A]): Int = node match {
+        case Leaf(_) => 0
+        case Branch(l,r) => max(depth(l) + 1, depth(r) + 1)
+    }
 
-    def map()
+    /** ex 28: write a fn map that modifies each element in a tree with a given fn */
+    def map[A,B](node: Tree[A])(f: A => B): Tree[B] = node match {
+        case Leaf(v) => Leaf(f(v))
+        case Branch(l,r) => Branch(map(l)(f), map(r)(f))
+    }
 
-    def fold()
+    def fold[A,B](node: Tree[A])(f: A => B)(g: (B,B) => B): B = node match {
+        case Leaf(v) => f(v)
+        case Branch(l,r) => Branch(fold(l)(f)(g), fold(r)(f)(g))
+    }
 
+    def sizeViaFold()
+
+    def maximumViaFold()
+
+    def depthViaFold()
+
+    def mapViaFold()
 }
