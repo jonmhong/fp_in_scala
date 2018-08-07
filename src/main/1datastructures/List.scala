@@ -224,7 +224,7 @@ object List {
         case (_,Nil) => Nil
         case (Cons(h1, t1), Cons(h2, t2))) => Cons(f(h1, h2) , zip(t1, t2)(f))
     }
-    
+
     /**
     ex 24: implement hasSubsequence for checking whether a List contains another List
     */
