@@ -55,4 +55,11 @@ object Tree {
         case Branch(l,r) => Branch(fold(l)(f)(g), fold(r)(f)(g))
     }
 
+    def sizeViaFold()
+
+    def maximumViaFold()
+
+    def depthViaFold()
+
+    def mapViaFold()
 }
