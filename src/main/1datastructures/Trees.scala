@@ -50,16 +50,25 @@ object Tree {
         case Branch(l,r) => Branch(map(l)(f), map(r)(f))
     }
 
+    /** ex 29: write a new fold function that abstracts over the others' similarities */
     def fold[A,B](node: Tree[A])(f: A => B)(g: (B,B) => B): B = node match {
         case Leaf(v) => f(v)
-        case Branch(l,r) => Branch(fold(l)(f)(g), fold(r)(f)(g))
+        case Branch(l,r) => g(fold(l)(f)(g), fold(r)(f)(g))
     }
 
-    def sizeViaFold()
+    def sizeViaFold[A](root: Tree[A]): Int = {
+        fold(root)(_ => 1)(_ + _ + 1)
+    }
 
-    def maximumViaFold()
+    def maximumViaFold[A](root: Tree[A]): A = {
+        fold(root)(v => v)((l,r) => max(l, r))
+    }
 
-    def depthViaFold()
+    def depthViaFold[A](root: Tree[A]): Int = {
+        fold(root)(_ => 0)((l,r) => 1 + max(l, r))
+    }
 
-    def mapViaFold()
+    def mapViaFold[A,B](root: Tree[A])(f: A => B): Tree[B] = {
+        fold(root)(v => Leaf(f(a)): Tree[B])(Branch(_,_))
+    }
 }
