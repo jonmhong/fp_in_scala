@@ -1,3 +1,5 @@
+import math
+
 /** These functions are added, so we can called them with obj.fn(arg1) rather than fn(obj, arg1) */
 // sealed is removed when adding these functions
 trait Option[+A] {
@@ -37,6 +39,12 @@ trait Option[+A] {
     // implementation using flatMap
     def filter2(f: A => Boolean): Option[A] = {
         flatMap(a => if f(a) Some(a) else None)
+    }
+
+    /** ex 2: implement the variance function, (variance is the mean of math.pow(x - m, 2))
+    */
+    def variance(xs: Seq[Double]): Option[Double] = {
+        mean(xs) getOrElse (m => mean(xs.map(x => math.pow(x - m, 2))))
     }
 }
 
