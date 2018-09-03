@@ -44,8 +44,10 @@ trait Option[+A] {
     /** ex 2: implement the variance function, (variance is the mean of math.pow(x - m, 2))
     */
     def variance(xs: Seq[Double]): Option[Double] = {
-        mean(xs) getOrElse (m => mean(xs.map(x => math.pow(x - m, 2))))
+        mean(xs) flatMap (m => mean(xs.map(x => math.pow(x - m, 2))))
     }
+
+
 }
 
 class object Some[+A](get: A): extends Option[A]
